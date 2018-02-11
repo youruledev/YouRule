@@ -8,25 +8,26 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.finastra.hackathon.yourule.model.ComplexCondition;
+
 import org.finastra.hackathon.yourule.model.Condition;
-import org.finastra.hackathon.yourule.model.Conditions;
-import org.finastra.hackathon.yourule.model.FinalCondition;
-import org.finastra.hackathon.yourule.model.compCondion;
-import org.finastra.hackathon.yourule.service.ConditionService;
+import org.finastra.hackathon.yourule.model.RuleType;
+import org.finastra.hackathon.yourule.service.RuleTypeService;
 
 
-@Path("/condition")
+@Path("/ruletypes")
 @Produces(MediaType.APPLICATION_JSON)
-public class ConditionResource 
+public class RuleTypesResource 
 {
-	ConditionService conditionService = new ConditionService();
+	
 		
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<compCondion> getAllConditions()
+	@Path("/{mid}")
+	public List<RuleType> getAllRuleTypes(@PathParam("mid") String Mid )
 	{
+		System.out.println("Mid="+Mid);
+		RuleTypeService ruleTypeService = new RuleTypeService();
 //		List<Emp> empList = myDAO.getAllEmployees();
 //	    log.info("size   " + empList.size());
 //	    Employees employees = new Employees();
@@ -36,15 +37,15 @@ public class ConditionResource
 		//List<Condition> l = conditionService.getAllConditions();
 		//Conditions c = new Conditions();
 		//c.setCondList(l);
-		return conditionService.getAllConditions();
+		return ruleTypeService.getAllRuleTypes();
 	}
 	
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	@Path("/{conditionId}")
-	public Condition getCondition(@PathParam("conditionId") int conditionId)
-	{	
-		return conditionService.getCondition(conditionId);
-	}
+//	@GET
+//	@Produces(MediaType.APPLICATION_JSON)
+//	@Path("/{conditionId}")
+//	public Condition getCondition(@PathParam("conditionId") int conditionId)
+//	{	
+//		return conditionService.getCondition(conditionId);
+//	}
 
 }
