@@ -1,6 +1,6 @@
 package org.finastra.hackathon.yourule.model;
 
-import java.util.List;
+
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -13,25 +13,29 @@ public class Rule
 
 
 	private String ruleName;
+	
+	private String ruleAction;
 
     private boolean ruleResult;
 
     private RuleEvaluation ruleEvaluation;
 
-    private String ruleAction;
     
-    /**
+    
+
+
+	/**
 	 * @param ruleName
+	 * @param ruleAction
 	 * @param ruleResult
 	 * @param ruleEvaluation
-	 * @param ruleAction
 	 */
-	public Rule(String ruleName,  String ruleAction, boolean ruleResult,
+	public Rule(String ruleName, String ruleAction, boolean ruleResult,
 			RuleEvaluation ruleEvaluation) {
 		this.ruleName = ruleName;
+		this.ruleAction = ruleAction;
 		this.ruleResult = ruleResult;
 		this.ruleEvaluation = ruleEvaluation;
-		this.ruleAction = ruleAction;
 	}
 
 	public Rule() {

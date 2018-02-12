@@ -8,18 +8,17 @@ import javax.xml.bind.annotation.XmlType;
 public class RuleType
 {
 
-
+	private String comment;
+	
+	private String ruleTypeID;
+	
+	private String ruleSubTypeID;
+	
+	private String ruleTypeName;
+	
+	private String executionTimeStamp;
+	
 	private String actionResult;
-
-    private String ruleTypeName;
-
-    private String ruleSubTypeID;
-
-    private String executionTimeStamp;
-
-    private String ruleTypeID;
-
-    private String comment;
 
     private Rule[] rules;
 
@@ -27,27 +26,30 @@ public class RuleType
 	{
 	}
     
+
     /**
-	 * @param actionResult
-	 * @param ruleTypeName
-	 * @param ruleSubTypeID
-	 * @param executionTimeStamp
-	 * @param ruleTypeID
 	 * @param comment
+	 * @param ruleTypeID
+	 * @param ruleSubTypeID
+	 * @param ruleTypeName
+	 * @param executionTimeStamp
+	 * @param actionResult
 	 * @param rules
 	 */
-	public RuleType(String comment, String ruleTypeID, String ruleSubTypeID, String ruleTypeName,
-			 String executionTimeStamp, String actionResult, Rule[] rules) {
-		this.actionResult = actionResult;
-		this.ruleTypeName = ruleTypeName;
-		this.ruleSubTypeID = ruleSubTypeID;
-		this.executionTimeStamp = executionTimeStamp;
-		this.ruleTypeID = ruleTypeID;
+	public RuleType(String comment, String ruleTypeID, String ruleSubTypeID,
+			String ruleTypeName, String executionTimeStamp,
+			String actionResult, Rule[] rules) {
 		this.comment = comment;
+		this.ruleTypeID = ruleTypeID;
+		this.ruleSubTypeID = ruleSubTypeID;
+		this.ruleTypeName = ruleTypeName;
+		this.executionTimeStamp = executionTimeStamp;
+		this.actionResult = actionResult;
 		this.rules = rules;
 	}
-    
-    public String getActionResult ()
+
+
+	public String getActionResult ()
     {
         return actionResult;
     }
