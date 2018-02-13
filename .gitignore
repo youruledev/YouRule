@@ -1,5 +1,6 @@
 #.metadata/
-#*.class
+#
+*.class
 .metadata
 bin/
 tmp/
