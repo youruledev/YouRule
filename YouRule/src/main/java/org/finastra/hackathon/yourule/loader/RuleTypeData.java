@@ -16,7 +16,7 @@ import java.util.Scanner;
 ###NOT_CACHED_PARAM_VALUE_BINDING#=#[[Pacs_008, 12, P_ORIG_MSG_TYPE, null, true], [Pacs_008, 12, P_ORIG_MSG_TYPE, null, false], [null, 12, P_DBT_MOP, null, true], [null, 12, P_CDT_MOP, null, true], [null, 12, D_FILE_SRC, null, true], [null, 12, X_TRANSACTION_CD, null, true], [, 12, ##GET_MULTI_FIELD_VAL##, GET_MULTI_FIELD_VAL(X_ADDENDA_INFO,1,X_RSN_CD), true], [null, 12, P_DBT_MOP, null, false], [null, 12, P_CDT_MOP, null, false], [null, 12, D_FILE_SRC, null, false], [null, 12, X_TRANSACTION_CD, null, false], [, 12, ##GET_MULTI_FIELD_VAL##, GET_MULTI_FIELD_VAL(X_ADDENDA_INFO,1,X_RSN_CD), false], [Pacs_008, 12, P_ORIG_MSG_TYPE, null, false], [null, 12, P_MSG_SUB_TYPE, null, true], [Pacs_008, 12, P_ORIG_MSG_TYPE, null, false], [0, -7, ##COMPARE_STRING##, COMPARE_STRING(X_TRANSACTION_CD=null,In Value List,NACHA_MP_RTN_NOC_CT_TX_CDS,''), true], [null, 12, P_MSG_SUB_TYPE, null, false], [null, 12, P_MSG_SUB_TYPE, null, false], [Pacs_008, 12, P_ORIG_MSG_TYPE, null, false], [0, -7, ##COMPARE_STRING##, COMPARE_STRING(X_TRANSACTION_CD=null,In Value List,NACHA_MP_RTN_NOC_DD_TX_CDS,''), true], [null, 12, P_MSG_SUB_TYPE, null, false], [Pacs_008, 12, P_ORIG_MSG_TYPE, null, false], [0, -7, ##COMPARE_STRING##, COMPARE_STRING(X_TRANSACTION_CD=null,In Value List,NACHA_MP_CT_TX_CDS,''), true], [Pacs_008, 12, P_ORIG_MSG_TYPE, null, false], [0, -7, ##COMPARE_STRING##, COMPARE_STRING(X_TRANSACTION_CD=null,In Value List,NACHA_MP_DD_TX_CDS,''), true], [Pacs_008, 12, P_ORIG_MSG_TYPE, null, false], [0, -7, ##COMPARE_STRING##, COMPARE_STRING(X_TRANSACTION_CD=null,In Value List,NACHA_MP_RTN_NOC_CT_TX_CDS,''), false], [null, 12, P_MSG_SUB_TYPE, null, false], [Pacs_008, 12, P_ORIG_MSG_TYPE, null, false], [0, -7, ##COMPARE_STRING##, COMPARE_STRING(X_TRANSACTION_CD=null,In Value List,NACHA_MP_RTN_NOC_DD_TX_CDS,''), false], [null, 12, P_MSG_SUB_TYPE, null, false]]
 ###CACHDE_RESULTS_COMPLETION_CODE#=#NORMAL_TERMINATION
  */
-public class RuleTypeEvalData {
+public class RuleTypeData {
 	public static String RULE_TYPE_EVAL_INFO_DELIMITER = "#RULE_TYPE_ID_EVAL_START";
 	
 	private static String KEY_DELIMITER = "####";
@@ -30,7 +30,7 @@ public class RuleTypeEvalData {
 	
 
 
-	RuleTypeEvalData(String rawData) {
+	RuleTypeData(String rawData) {
 		this.rawData = rawData;
 		
 		parseRawData();
@@ -38,7 +38,7 @@ public class RuleTypeEvalData {
 	
 
 	
-	void parseRawData()
+	private void parseRawData()
 	{
 		Scanner ruleTypeEvalScanner = new Scanner(rawData);
 		
@@ -74,33 +74,38 @@ public class RuleTypeEvalData {
 	}
 	
 
-	String getRuleTypeId() { 
+	public String getRuleTypeId() { 
 		return   ruleTypeEvalMap.get("RULE_TYPE_ID");
 	}
 	
-	String getRuleSubTypeId() { 
+	public String getRuleSubTypeId() { 
 		return   ruleTypeEvalMap.get("RULE_SUB_TYPE_ID");
 	}
 	
-	String getRuleTypeName() { 
+	public String getRuleTypeName() { 
 		return   ruleTypeEvalMap.get("RULE_TYPE_NAME");
 	}
 	
-	String getEvaluateType() { 
+	public String getEvaluateType() { 
 		return   ruleTypeEvalMap.get("EVALUATE_TYPE");
 	}
 	
-	String getExecType() { 
+	public String getExecType() { 
 		return   ruleTypeEvalMap.get("EXEC_TYPE");
 	}
 	
-	String getTimeStamp() { 
+	public String getTimeStamp() { 
 		return   ruleTypeEvalMap.get("TIME_STAMP");
 	}
 	
-	RuleAssociationData getRuleAssociationInfo( int index)
+	public RuleAssociationData getRuleAssociationInfo( int index)
 	{
 		return ruleAssociationInfoList.get(index);
+	}
+	
+	public List<RuleAssociationData>  getRuleAssociations( )
+	{
+		return ruleAssociationInfoList;
 	}
 	
 	@Override

@@ -9,19 +9,19 @@ import java.util.Scanner;
 
 public class DataLoader {
 
-	List<RuleTypeEvalData> ruleTypeList = new ArrayList<RuleTypeEvalData>();
+	List<RuleTypeData> ruleTypeList = new ArrayList<RuleTypeData>();
 	
 	public  void load(String filePath) throws Exception
 	{
 		FileReader fr = new FileReader(filePath);
 		Scanner scan = new Scanner(fr);
-		scan.useDelimiter(RuleTypeEvalData.RULE_TYPE_EVAL_INFO_DELIMITER);
+		scan.useDelimiter(RuleTypeData.RULE_TYPE_EVAL_INFO_DELIMITER);
 		
 		
 		
 		while (scan.hasNext())
 		{
-			ruleTypeList.add(new RuleTypeEvalData(scan.next()));
+			ruleTypeList.add(new RuleTypeData(scan.next()));
 		}
 		
 		
@@ -33,12 +33,12 @@ public class DataLoader {
 	}
 	
 	
-	public List<RuleTypeEvalData> getAllRuleTypeEvalData()
+	public List<RuleTypeData> getAllRuleTypeEvalData()
 	{
 		return ruleTypeList;
 	}
 	
-	public RuleTypeEvalData getRuleTypeEvalData(int index)
+	public RuleTypeData getRuleTypeEvalData(int index)
 	{
 		return ruleTypeList.get(index);
 	}

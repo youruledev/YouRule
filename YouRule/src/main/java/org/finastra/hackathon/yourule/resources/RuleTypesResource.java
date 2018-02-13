@@ -10,6 +10,7 @@ import javax.ws.rs.core.MediaType;
 
 
 
+import org.finastra.hackathon.yourule.loader.RuleTypeData;
 import org.finastra.hackathon.yourule.model.RuleType;
 import org.finastra.hackathon.yourule.service.RuleTypeService;
 
@@ -28,11 +29,11 @@ public class RuleTypesResource
 	{
 		System.out.println("Mid="+Mid);
 		RuleTypeService ruleTypeService = new RuleTypeService();
-		return ruleTypeService.getAllRuleTypes();
+		
+		return ruleTypeService.getAllRuleTypes(Mid);
 	}
 	
-	/*
-	 * for testing purpose
+//	for testing purpose
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
 	@Path("/{mid}/{ruleIndex}")
@@ -42,7 +43,7 @@ public class RuleTypesResource
 		
 		return ruleTypeService.loadAllRuleTypes(Mid,ruleIndex);
 	}
-	*/
+	
 	
 
 }

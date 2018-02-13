@@ -1,5 +1,7 @@
 package org.finastra.hackathon.yourule.model;
 
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -20,7 +22,7 @@ public class RuleType
 	
 	private String actionResult;
 
-    private Rule[] rules;
+    private List<Rule> rules;
 
     public RuleType()
 	{
@@ -38,7 +40,7 @@ public class RuleType
 	 */
 	public RuleType(String comment, String ruleTypeID, String ruleSubTypeID,
 			String ruleTypeName, String executionTimeStamp,
-			String actionResult, Rule[] rules) {
+			String actionResult, List<Rule> rules) {
 		this.comment = comment;
 		this.ruleTypeID = ruleTypeID;
 		this.ruleSubTypeID = ruleSubTypeID;
@@ -109,12 +111,12 @@ public class RuleType
         this.comment = comment;
     }
 
-    public Rule[] getRules ()
+    public List<Rule> getRules ()
     {
         return rules;
     }
 
-    public void setRules (Rule[] rules)
+    public void setRules (List<Rule> rules)
     {
         this.rules = rules;
     }
