@@ -51,12 +51,6 @@ public class Parser {
 	    List<Rule> rules = new ArrayList<Rule>();
 
 	    
-	    Condition finalCond1 = new Condition(StringsDef.CONDITION_FINAL, null, null, null, "a", "5", "=", "4");
-		Condition finalCond2 = new Condition(StringsDef.CONDITION_FINAL, null, null, null, "b", "5", "=", "5");
-		RuleEvaluation re1 = new RuleEvaluation(false, "a=5", "a=4", finalCond1);
-		Rule ruleWith1Final = new Rule("business area rule name", "action1", false,   re1);
-		rules.add(ruleWith1Final);
-		rules.add(ruleWith1Final);
 		
 		
 		RuleType ruleType;
@@ -80,8 +74,6 @@ public class Parser {
 		}
 		
 	
-		
-
 		return ruleType;
 	}
 
