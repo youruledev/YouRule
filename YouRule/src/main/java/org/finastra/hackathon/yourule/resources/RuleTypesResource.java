@@ -31,5 +31,15 @@ public class RuleTypesResource
 		return ruleTypeService.getAllRuleTypes();
 	}
 	
+	@GET
+	@Produces(MediaType.TEXT_PLAIN)
+	@Path("/{mid}/{ruleIndex}")
+	public String getAllRuleTypes(@PathParam("mid") String Mid,  @PathParam("ruleIndex") int ruleIndex)
+	{
+		RuleTypeService ruleTypeService = new RuleTypeService();
+		
+		return ruleTypeService.loadAllRuleTypes(Mid,ruleIndex);
+	}
+	
 
 }

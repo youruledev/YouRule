@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Arrays;
 
 
+import org.finastra.hackathon.yourule.loader.DataLoader;
 import org.finastra.hackathon.yourule.model.Condition;
 import org.finastra.hackathon.yourule.model.Rule;
 import org.finastra.hackathon.yourule.model.RuleEvaluation;
@@ -13,6 +14,8 @@ import org.finastra.hackathon.yourule.model.StringsDef;
 
 public class RuleTypeService 
 {
+	public static String TRC_DIR = "C:\\trc\\"; 
+	public static String TRC_EXT = "_rules.log"; 
 
 	public List<RuleType> getAllRuleTypes()
 	{	
@@ -40,5 +43,27 @@ public class RuleTypeService
 		RuleType rt3 = new RuleType(StringsDef.RULE_TYPE_COMMENT, "1", "0", "Department", "2018-01-11 13:04:38.504", "DEF", ra3);
 		List<RuleType> list = Arrays.asList(rt1, rt2, rt3);
 		return list;
+	}
+	
+	public String loadAllRuleTypes ( String fileName, int index)
+	{
+		DataLoader loader = new DataLoader();
+		String retStr = null;
+		
+		fileName = TRC_DIR + fileName + TRC_EXT;
+		
+		try 
+		{
+			loader.load(fileName);
+			retStr = loader.getRuleTypeEvalInfo(index).toString();
+		}
+		
+		catch (Exception e)
+		{
+			System.out.println(e.getMessage());
+			retStr = e.getMessage();
+		}
+		
+		return retStr;
 	}
 }
