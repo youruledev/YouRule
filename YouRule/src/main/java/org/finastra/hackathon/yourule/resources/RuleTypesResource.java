@@ -31,6 +31,8 @@ public class RuleTypesResource
 		return ruleTypeService.getAllRuleTypes();
 	}
 	
+	/*
+	 * for testing purpose
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
 	@Path("/{mid}/{ruleIndex}")
@@ -40,6 +42,7 @@ public class RuleTypesResource
 		
 		return ruleTypeService.loadAllRuleTypes(Mid,ruleIndex);
 	}
+	*/
 	
 
 }

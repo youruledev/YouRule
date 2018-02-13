@@ -33,7 +33,12 @@ public class DataLoader {
 	}
 	
 	
-	public RuleTypeEvalData getRuleTypeEvalInfo(int index)
+	public List<RuleTypeEvalData> getAllRuleTypeEvalData()
+	{
+		return ruleTypeList;
+	}
+	
+	public RuleTypeEvalData getRuleTypeEvalData(int index)
 	{
 		return ruleTypeList.get(index);
 	}
