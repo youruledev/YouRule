@@ -4,45 +4,45 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlRootElement(name = "Condition")
-@XmlType(propOrder = {"type", "leftCondition", "rightCondition", "logicalOperator", "leftValue", "rightValue", "operator",  "leftValueBind"})
+@XmlType(propOrder = {"type", "leftCondition", "rightCondition", "logicalOperator", "leftOperand", "rightOperand", "operator",  "leftOperandValue"})
 public class Condition
 {
-    
-
 
 	private String type;
     private Condition leftCondition;
     private Condition rightCondition;
     private String logicalOperator;
-    private String rightValue;
-    private String leftValue;
+    private String leftOperand;
+    private String rightOperand;    
     private String operator;
-    private String leftValueBind;
+    private String leftOperandValue;
 
 
-    /**
+
+	/**
 	 * @param type
 	 * @param leftCondition
 	 * @param rightCondition
 	 * @param logicalOperator
-	 * @param rightValue
-	 * @param leftValue
+	 * @param leftOperand
+	 * @param rightOperand
 	 * @param operator
-	 * @param leftValueBind
+	 * @param leftOperandValue
 	 */
 	public Condition(String type, Condition leftCondition,
 			Condition rightCondition, String logicalOperator,
-			String rightValue, String leftValue, String operator,
-			String leftValueBind) {
+			String leftOperand, String rightOperand, String operator,
+			String leftOperandValue) {
 		this.type = type;
 		this.leftCondition = leftCondition;
 		this.rightCondition = rightCondition;
 		this.logicalOperator = logicalOperator;
-		this.rightValue = rightValue;
-		this.leftValue = leftValue;
+		this.leftOperand = leftOperand;
+		this.rightOperand = rightOperand;
 		this.operator = operator;
-		this.leftValueBind = leftValueBind;
+		this.leftOperandValue = leftOperandValue;
 	}
+	
 
 	public Condition() {
 	}
@@ -57,14 +57,14 @@ public class Condition
         this.logicalOperator = logicalOperator;
     }
 
-    public String getLeftValueBind ()
+    public String getLeftOperandValue ()
     {
-        return leftValueBind;
+        return leftOperandValue;
     }
 
-    public void setLeftValueBind (String leftValueBind)
+    public void setLeftOperandValue (String leftOperandValue)
     {
-        this.leftValueBind = leftValueBind;
+        this.leftOperandValue = leftOperandValue;
     }
 
     public Condition getLeftCondition ()
@@ -87,14 +87,14 @@ public class Condition
         this.type = type;
     }
 
-    public String getRightValue ()
+    public String getRightOperand ()
     {
-        return rightValue;
+        return rightOperand;
     }
 
-    public void setRightValue (String rightValue)
+    public void setRightOperand (String rightOperand)
     {
-        this.rightValue = rightValue;
+        this.rightOperand = rightOperand;
     }
 
     public String getOperator ()
@@ -107,14 +107,14 @@ public class Condition
         this.operator = operator;
     }
 
-    public String getLeftValue ()
+    public String getLeftOperand ()
     {
-        return leftValue;
+        return leftOperand;
     }
 
-    public void setLeftValue (String leftValue)
+    public void setLeftOperand (String leftOperand)
     {
-        this.leftValue = leftValue;
+        this.leftOperand = leftOperand;
     }
 
     public Condition getRightCondition ()
@@ -130,6 +130,6 @@ public class Condition
     @Override
     public String toString()
     {
-        return "ClassPojo [logicalOperator = "+logicalOperator+", leftValueBind = "+leftValueBind+", leftCondition = "+leftCondition+", type = "+type+", rightValue = "+rightValue+", operator = "+operator+", leftValue = "+leftValue+", rightCondition = "+rightCondition+"]";
+        return "ClassPojo [logicalOperator = "+logicalOperator+", leftOperandValue = "+leftOperandValue+", leftCondition = "+leftCondition+", type = "+type+", leftOperand = "+rightOperand+", operator = "+operator+", leftOperand = "+leftOperand+", rightCondition = "+rightCondition+"]";
     }
 }
