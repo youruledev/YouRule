@@ -53,27 +53,31 @@ public class RuleAssociationData {
 		}
 	}
 	
-	String getRuleObjectAssociation() { 
+	public String getRuleObjectAssociation() { 
 		return   ruleAssociationMap.get("RULE_OBJECT_ASSOCIATION");
 	}
 	
-	String getExecutionScript() { 
+	public String getExecutionScript() { 
 		return   ruleAssociationMap.get("EXECUTION_SCRIPT");
 	}
 	
-	String getAliasBinding() { 
+	public String getAliasBinding() { 
 		return   ruleAssociationMap.get("ALIAS_BINDIND");
 	}
 	
-	String getIsUsingCacheResults() { 
+	public String getIsUsingCacheResults() { 
 		return   ruleAssociationMap.get("IS_USING_CACHE_RESULTS");
 	}
 	
-	String getNotCachedParamValueBinding() { 
+	public String getNotCachedParamValueBinding() { 
 		return   ruleAssociationMap.get("NOT_CACHED_PARAM_VALUE_BINDING");
 	}
 	
-	String getCachedResultsCompletionCode() { 
+	public String getCachedParamValueBinding() { 
+		return   ruleAssociationMap.get("CACHED_PARAM_VALUE_BINDING");
+	}
+	
+	public String getCachedResultsCompletionCode() { 
 		return   ruleAssociationMap.get("CACHDE_RESULTS_COMPLETION_CODE");
 	}
 	
