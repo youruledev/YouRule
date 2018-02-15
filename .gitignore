@@ -13,6 +13,10 @@ local.properties
 .loadpath
 .recommenders
 
+
+# pom.properties
+pom.properties
+
 # External tool builders
 .externalToolBuilders/
 

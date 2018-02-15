@@ -28,17 +28,17 @@ public class RuleAssociationData {
 	
 	void parseRawData()
 	{
-		Scanner RuleAssociationScanner = new Scanner(rawData);
+		Scanner ruleAssociationScanner = new Scanner(rawData);
 		
-		RuleAssociationScanner.useDelimiter(KEY_DELIMITER);
+		ruleAssociationScanner.useDelimiter(KEY_DELIMITER);
 		
 		String exp;
 		String[] splitExp;
 		List<String> supportedKeyList = new ArrayList<String>(Arrays.asList(supportedKey));
 		
-		while (RuleAssociationScanner.hasNext()) 
+		while (ruleAssociationScanner.hasNext()) 
 		{
-			exp = RuleAssociationScanner.next();
+			exp = ruleAssociationScanner.next();
 
 			splitExp = exp.split(EXPRESSION_DELIMITER);
 
@@ -53,7 +53,8 @@ public class RuleAssociationData {
 		}
 	}
 	
-	public String getRuleObjectAssociation() { 
+
+	public String  getRuleObjectAssociation() { 
 		return   ruleAssociationMap.get("RULE_OBJECT_ASSOCIATION");
 	}
 	
@@ -73,9 +74,34 @@ public class RuleAssociationData {
 		return   ruleAssociationMap.get("NOT_CACHED_PARAM_VALUE_BINDING");
 	}
 	
+
 	public String getCachedParamValueBinding() { 
 		return   ruleAssociationMap.get("CACHED_PARAM_VALUE_BINDING");
 	}
+
+	public String getResultAction() { 
+		return   ruleAssociationMap.get("RESULT_ACTION");
+	}
+	
+	public String getResultObjectUid() { 
+		return   ruleAssociationMap.get("RESULT_OBJECT_UID");
+	}
+	
+	public String getResultRuleSequence() { 
+		return   ruleAssociationMap.get("RESULT_RULE_SEQUENCE");
+	}
+	
+	public String getResultRuleTypeId() { 
+		return   ruleAssociationMap.get("RESULT_TYPE_ID");
+	}
+	
+	public String getResultRuleId() { 
+		return   ruleAssociationMap.get("RESULT_RULE_UID");
+	}
+	
+	public String getSecAction() { 
+		return   ruleAssociationMap.get("RESULT_SEC_ACTION");
+	}	
 	
 	public String getCachedResultsCompletionCode() { 
 		return   ruleAssociationMap.get("CACHDE_RESULTS_COMPLETION_CODE");
