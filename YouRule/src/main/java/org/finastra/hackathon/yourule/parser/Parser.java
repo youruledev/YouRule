@@ -50,7 +50,7 @@ public class Parser {
 	
 	private RuleType parseRuleType(RuleTypeData ruleTypeData) {
 		
-		String comment = StringsDef.RULE_TYPE_COMMENT;		
+		String comment = null;		
 		String ruleTypeID = ruleTypeData.getRuleTypeId();		
 		String ruleSubTypeID = parseRuleSubTypeID(ruleTypeData);
 		String ruleTypeName = ruleTypeData.getRuleTypeName();
@@ -103,23 +103,23 @@ public class Parser {
 		}
 		return isUsingCahceResults;
 	}
-	private String parseParamValueBinding(RuleAssociationData ruleAssociationData)
+	private Map<String,String> parseParamValueBinding(RuleAssociationData ruleAssociationData)
 	{
 		boolean isUsingCachedResults = parseIsUsingCacheResults(ruleAssociationData);
-		String paramValueBind = "";
+		Map<String,String> ParamValueBind;
 		if (isUsingCachedResults == true)
 		{
-			paramValueBind = parseParamValueBindingCached(ruleAssociationData);
+			ParamValueBind = parseParamValueBindingCached(ruleAssociationData);
 		}
 		else
 		{
-			paramValueBind = parseParamValueBindingNotCached(ruleAssociationData);
+			ParamValueBind = parseParamValueBindingNotCached(ruleAssociationData);
 		}
-		return paramValueBind;
+		return ParamValueBind;
 	}
 	
 	
-	private String parseParamValueBindingNotCached(RuleAssociationData ruleAssociationData) {
+	private Map<String,String> parseParamValueBindingNotCached(RuleAssociationData ruleAssociationData) {
 		
 		//example for rawBinding: [[null, 12, X_INITG_PTY_ID, null, true], [null, 12, P_PMNT_SRC, null, true], [DIAS-CT-HV, 12, P_DBT_MOP, null, true], [null, 12, P_PMNT_SRC, null, false]]
 		String rawBinding = ruleAssociationData.getNotCachedParamValueBinding();
@@ -168,10 +168,10 @@ public class Parser {
 			
 			
 		}
-		return ParamValueBind.toString();
+		return ParamValueBind;
 	}
 
-	private String parseParamValueBindingCached(RuleAssociationData ruleAssociationData) 
+	private Map<String,String> parseParamValueBindingCached(RuleAssociationData ruleAssociationData) 
 	{
 		//example for rawBinding (the binding is inside the "[]" at the end of string): [DAOPrules.executeRule()]: Executing the following rule, (rule type ID 1, name Department): 
 		//SELECT CASE  WHEN    'Pacs_008' = 'Pain_009' THEN 'GR1^1^TEST1,TRF,0,0' WHEN   150.00 <= 100 THEN 'GR1^1^TEST2,TRF,0,1' WHEN 1 = 1 THEN 'GR1^1^GR1_DEPT,TRF,0,2' END FROM DUAL
@@ -232,7 +232,7 @@ public class Parser {
 			
 		}
 		
-		return ParamValueBind.toString();
+		return ParamValueBind;
 	}
 
 	//private List<Rule> parseRuleAssociation(RuleAssociationData ruleAssociationDataElem) 
@@ -252,13 +252,16 @@ public class Parser {
 		List<WhereThenData> whereThenList = parseExecutionScript(ruleAssociationDataElem.getExecutionScript());
 		List<Rule> rules = new ArrayList<Rule> ();
 		String []splitAction;
-		String rawBinding = parseParamValueBinding(ruleAssociationDataElem);
+		Map<String,String> rawBindingPerRuleType = parseParamValueBinding(ruleAssociationDataElem);
+		String rawBindingPerRule = null;
 		
 		if (whereThenList != null)
 		{
 			for (WhereThenData whereThenData:whereThenList)
 			{
-				RuleEvaluation ruleEval = new RuleEvaluation(true, whereThenData.getsWhere(), rawBinding, null);
+				rawBindingPerRule = parseParamValueBindingPerRule(rawBindingPerRuleType, whereThenData.getsWhere());
+				RuleEvaluation ruleEval = new RuleEvaluation(true, whereThenData.getsWhere(), rawBindingPerRule, null);
+				
 				
 				splitAction = whereThenData.getsThen().split(",");
 				//splitAction[0] ruleUid - ***^114^NACHA_MP_MT_SEL_ALREADY_RAN
@@ -281,6 +284,18 @@ public class Parser {
 	
 	
 	
+	private String parseParamValueBindingPerRule(Map<String, String> rawBindingPerRuleType, String RawConsitions) {
+		Map<String, String> rawBindingPerRule = new HashMap<String,String>(); 
+		for (Map.Entry<String, String> rawBindingElem: rawBindingPerRuleType.entrySet())
+		{
+			if (RawConsitions.contains(rawBindingElem.getKey()))
+			{
+				rawBindingPerRule.put(rawBindingElem.getKey(), rawBindingElem.getValue());
+			}
+		}
+		return rawBindingPerRule.toString();
+	}
+
 	private List<WhereThenData> parseExecutionScript(String execScript)
 	{
 		if (execScript.startsWith("SELECT CASE  WHEN"))
