@@ -266,7 +266,9 @@ public class Parser {
 				//splitAction[2]   - NA
 				//splitAction[3]   - 0
 				
-				Rule rule = new Rule (splitAction[0], splitAction[1], splitAction[0].equals(ruleAssociationDataElem.getResultRuleId()), ruleEval);
+				//String []splitRuleUid = splitAction[0].split("\\^");
+				
+				Rule rule = new Rule (splitAction[0].split("\\^")[2], splitAction[1], splitAction[0].equals(ruleAssociationDataElem.getResultRuleId()), ruleEval);
 				
 				rules.add(rule);
 			}
