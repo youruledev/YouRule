@@ -25,6 +25,8 @@ public class Parser {
 	public List<RuleType> parse(List<RuleTypeData> rulesTypesData)
 	{
 		List<RuleType> retRuleTypes = new ArrayList<RuleType>();
+		try{
+		
 		for(RuleTypeData ruleTypeDataElem: rulesTypesData)
 		{	
 			RuleType ruleType = parseRuleType(ruleTypeDataElem);
@@ -32,6 +34,9 @@ public class Parser {
 			{
 				retRuleTypes.add(ruleType);
 			}	
+		}
+		}catch (Exception e){
+			System.out.println("Error while parsing" + e.getMessage());
 		}
 		return retRuleTypes;
 	}
@@ -51,9 +56,10 @@ public class Parser {
 	private RuleType parseRuleType(RuleTypeData ruleTypeData) {
 		
 		String comment = null;		
-		String ruleTypeID = ruleTypeData.getRuleTypeId();		
+		String ruleTypeID = ruleTypeData.getRuleTypeId();	
 		String ruleSubTypeID = parseRuleSubTypeID(ruleTypeData);
 		String ruleTypeName = ruleTypeData.getRuleTypeName();
+		System.out.println("Parsing rule Type name: "+ ruleTypeName + " rule Type id: " + ruleTypeID);
 		String executionTimeStamp = ruleTypeData.getTimeStamp();	
 		String actionResult = "NONE";
 	    List<Rule> rules = new ArrayList<Rule>();
@@ -123,6 +129,7 @@ public class Parser {
 		
 		//example for rawBinding: [[null, 12, X_INITG_PTY_ID, null, true], [null, 12, P_PMNT_SRC, null, true], [DIAS-CT-HV, 12, P_DBT_MOP, null, true], [null, 12, P_PMNT_SRC, null, false]]
 		String rawBinding = ruleAssociationData.getNotCachedParamValueBinding();
+		rawBinding = rawBinding.trim();
 		Map<String,String> ParamValueBind= new HashMap<String,String>(); 
 		int len  = rawBinding.length();
 		if (rawBinding != null)
@@ -159,7 +166,7 @@ public class Parser {
 				nextStartPos = bindingDataElem.indexOf(",", nextComma + charLen) + spaceLen;
 				nextComma = bindingDataElem.indexOf(",", nextStartPos);
 				Param = bindingDataElem.substring(nextStartPos, nextComma);
-				ParamValueBind.put(Param, Value);
+				ParamValueBind.put(Param.trim(), Value.trim());
 				
 			}
 			
@@ -177,6 +184,7 @@ public class Parser {
 		//SELECT CASE  WHEN    'Pacs_008' = 'Pain_009' THEN 'GR1^1^TEST1,TRF,0,0' WHEN   150.00 <= 100 THEN 'GR1^1^TEST2,TRF,0,1' WHEN 1 = 1 THEN 'GR1^1^GR1_DEPT,TRF,0,2' END FROM DUAL
 		//[P_MSG_TYPE='Pacs_008', X_STTLM_AMT=150.00]
 		String rawBinding = ruleAssociationData.getCachedParamValueBinding();
+		rawBinding = rawBinding.trim();
 		Map<String,String> ParamValueBind= new HashMap<String,String>(); 
 		List<String> bindingElements = new ArrayList<String>();
 		String strParamValue = null;
@@ -222,7 +230,7 @@ public class Parser {
 				{
 					Param = bindingElem.substring(0, equalSignPos);
 					Value = bindingElem.substring(equalSignPos, bindingElem.length());
-					ParamValueBind.put(Param, Value);
+					ParamValueBind.put(Param.trim(), Value.trim());
 				}
 				
 				
