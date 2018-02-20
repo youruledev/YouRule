@@ -36,7 +36,8 @@ public class Parser {
 			}	
 		}
 		}catch (Exception e){
-			System.out.println("Error while parsing" + e.getMessage());
+			System.out.println("Error while parsing: " + e.getMessage());
+			return null;
 		}
 		return retRuleTypes;
 	}
@@ -60,7 +61,7 @@ public class Parser {
 		String ruleSubTypeID = parseRuleSubTypeID(ruleTypeData);
 		String ruleTypeName = ruleTypeData.getRuleTypeName();
 		System.out.println("Parsing rule Type name: "+ ruleTypeName + " rule Type id: " + ruleTypeID);
-		String executionTimeStamp = ruleTypeData.getTimeStamp();	
+		String executionTimeStamp = parseRuleTimeStamp(ruleTypeData);	
 		String actionResult = "NONE";
 	    List<Rule> rules = new ArrayList<Rule>();
 	    
@@ -96,6 +97,13 @@ public class Parser {
 		return ruleType;
 	}
 
+
+	private String parseRuleTimeStamp(RuleTypeData ruleTypeData) {
+		String TimeStamp = ruleTypeData.getTimeStamp();
+		TimeStamp = TimeStamp.replaceAll("\\n", "");
+		TimeStamp = TimeStamp.replaceAll("\r", "");
+		return TimeStamp;
+	}
 
 	private boolean parseIsUsingCacheResults(RuleAssociationData ruleAssociationData)
 	{
@@ -139,12 +147,25 @@ public class Parser {
 
 			
 			//prepare list of strings, each represent one binding. example of a string: [null, 12, X_INITG_PTY_ID, null, true]
+			//example2: [true, -7, ##IS_EMPTY##, IS_EMPTY((,[X_DBTR_ACCT]), true]
 			List<String> BindingData = new ArrayList<String>();
 			int indexOfNextOpeningBracket = rawBinding.indexOf("[");
 			int indexOfNextClosingBracket = rawBinding.indexOf("]");
-			while ((indexOfNextOpeningBracket != -1) && (indexOfNextOpeningBracket != -1))
+			while ((indexOfNextOpeningBracket != -1) && (indexOfNextClosingBracket != -1))
 			{
+				
+				
+				String tempNextBinding = rawBinding.substring(indexOfNextOpeningBracket+1, indexOfNextClosingBracket);
+				boolean foundInnerBracket  = tempNextBinding.contains("[");//next binding contains inner "[]"
+				while (foundInnerBracket)
+				{
+					int indexOfNextClosingBracketOld = indexOfNextClosingBracket;
+					indexOfNextClosingBracket = indexOfNextClosingBracket + rawBinding.substring(indexOfNextClosingBracket+1).indexOf("]") + 1;
+					tempNextBinding = rawBinding.substring(indexOfNextClosingBracketOld+1, indexOfNextClosingBracket);
+					foundInnerBracket  = tempNextBinding.contains("[");
+				}
 				String nextBinding = rawBinding.substring(indexOfNextOpeningBracket+1, indexOfNextClosingBracket);
+				
 				BindingData.add(nextBinding);
 				rawBinding = rawBinding.substring(indexOfNextClosingBracket+1);
 				indexOfNextOpeningBracket = rawBinding.indexOf("[");
@@ -161,7 +182,7 @@ public class Parser {
 			for (String bindingDataElem:BindingData )
 			{
 				nextComma = bindingDataElem.indexOf(",");
-				nextStartPos = bindingDataElem.indexOf("[") + charLen;
+				nextStartPos = 0;
 				Value = bindingDataElem.substring(nextStartPos, nextComma);
 				nextStartPos = bindingDataElem.indexOf(",", nextComma + charLen) + spaceLen;
 				nextComma = bindingDataElem.indexOf(",", nextStartPos);
