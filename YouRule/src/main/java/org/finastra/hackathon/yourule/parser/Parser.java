@@ -15,6 +15,7 @@ import org.finastra.hackathon.yourule.loader.RuleTypeData;
 import org.finastra.hackathon.yourule.loader.WhereThenData;
 import org.finastra.hackathon.yourule.model.Condition;
 import org.finastra.hackathon.yourule.model.Rule;
+import org.finastra.hackathon.yourule.model.RuleDetails;
 import org.finastra.hackathon.yourule.model.RuleEvaluation;
 import org.finastra.hackathon.yourule.model.RuleType;
 import org.finastra.hackathon.yourule.model.StringsDef;
@@ -84,12 +85,18 @@ public class Parser {
 					actionResult = ruleAssociationDataElem.getResultAction();
 				}
 				
+
+				
 			}
 			
 			//TODO: adjust when supporting ALLSET
 			if (ruleTypeData.getEvaluateType().equals("FIRST"))
 			{
 				ruleType = new RuleType(comment, ruleTypeID, ruleSubTypeID, ruleTypeName, executionTimeStamp, actionResult, rules);
+			}
+			else
+			{
+				ruleType = new RuleType(comment, ruleTypeID, ruleSubTypeID, ruleTypeName, executionTimeStamp, "NOT FIRST", null);
 			}
 		//}
 		
@@ -330,7 +337,7 @@ public class Parser {
 		if (execScript.startsWith("SELECT CASE  WHEN"))
 		{
 			execScript = execScript.substring(17); // length of "SELECT CASE  WHEN"
-			return parseFirstExecutionScript(execScript);
+			return parseFirstTypeExecutionScript(execScript);
 		}
 		else  if (execScript.startsWith("SELECT"))
 		{
@@ -340,7 +347,7 @@ public class Parser {
 		return null;
 	}
 	
-	private List<WhereThenData> parseFirstExecutionScript(String execScript)
+	private List<WhereThenData> parseFirstTypeExecutionScript(String execScript)
 	{
 		
 		/*
@@ -406,9 +413,93 @@ public class Parser {
 	
 	
 	
-	private void parseAllsetExecutionScript(String execScript)
+	private void parseAllSetTypeExecutionScript(String execScript)
 	{
 				
+	}
+
+	public List<RuleDetails> parseRulesDetails(List<RuleTypeData> rulesTypesData, String mid) {
+		
+		List<RuleDetails> retRuleDetails = new ArrayList<RuleDetails>();
+		try{
+		
+		for(RuleTypeData ruleTypeDataElem: rulesTypesData)
+		{	
+			List<RuleDetails> parsedRuleDetails = parseRulesFromRuleType(ruleTypeDataElem, mid);
+			if (parsedRuleDetails != null)
+			{
+				retRuleDetails.addAll(parsedRuleDetails);
+			}	
+		}
+		}catch (Exception e){
+			System.out.println("Error while parsing: " + e.getMessage());
+			return null;
+		}
+		return retRuleDetails;
+		
+	}
+
+	private List<RuleDetails> parseRulesFromRuleType(RuleTypeData ruleTypeDataElem, String mid) {
+		
+		List<RuleDetails> retRuleDetails = new ArrayList<RuleDetails>();
+		String comment = null;		
+		String ruleTypeID = ruleTypeDataElem.getRuleTypeId();	
+		String ruleSubTypeID = parseRuleSubTypeID(ruleTypeDataElem);
+		String ruleTypeName = ruleTypeDataElem.getRuleTypeName();
+		System.out.println("Parsing rule Type name: "+ ruleTypeName + " rule Type id: " + ruleTypeID);
+		String executionTimeStamp = parseRuleTimeStamp(ruleTypeDataElem);	
+		String actionResult = "NONE";
+	    List<Rule> rules = new ArrayList<Rule>();
+	    
+		
+		RuleType ruleType = null;
+		List<RuleAssociationData>  ruleAssciationList = ruleTypeDataElem.getRuleAssociations();
+		//if (ruleAssciationList.size() == 0) //no rule were attached for this rule type
+		//{
+		//	ruleType = null;
+		//}
+		//else
+		//{
+			for(RuleAssociationData ruleAssociationDataElem:ruleAssciationList)
+			{
+				rules = parseRuleAssociation(ruleAssociationDataElem);
+				
+				//TODO: adjust when supporting ALLSET
+				if (ruleAssociationDataElem.getResultAction() != null)
+				{
+					actionResult = ruleAssociationDataElem.getResultAction();
+				}
+				
+				/**
+				 * @param ruleName
+				 * @param ruleAction
+				 * @param ruleResult
+				 * @param ruleTypeID
+				 * @param ruleSubTypeID
+				 * @param ruleTypeName
+				 * @param executionTimeStamp
+				 * @param actionResult
+				 * @param rawConditions
+				 * @param rawBinding
+				 */
+				RuleDetails ruleDetails;
+				for(Rule rule: rules)
+				{
+					ruleDetails = new RuleDetails(mid, rule.getRuleName(), rule.getRuleAction(), rule.getRuleResult(), ruleTypeID, ruleSubTypeID, ruleTypeName, executionTimeStamp, actionResult, rule.getRuleEvaluation().getRawConditions(), rule.getRuleEvaluation().getRawBinding());
+					retRuleDetails.add(ruleDetails);
+				}
+				
+			}
+			
+			//TODO: adjust when supporting ALLSET
+//			if (ruleTypeDataElem.getEvaluateType().equals("FIRST"))
+//			{
+//				ruleType = new RuleType(comment, ruleTypeID, ruleSubTypeID, ruleTypeName, executionTimeStamp, actionResult, rules);
+//			}
+		//}
+		
+	
+		return retRuleDetails;
 	}
 	
 	
