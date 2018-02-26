@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 
 public class RuleAssociationData {
-	private static String KEY_DELIMITER = "###";
+	private static String KEY_DELIMITER = "####";
 	private static String EXPRESSION_DELIMITER = "#=#";
 	
 	private static String[] supportedKey = new String[] {"RULE_OBJECT_ASSOCIATION","EXECUTION_SCRIPT","ALIAS_BINDIND","IS_USING_CACHE_RESULTS","NOT_CACHED_PARAM_VALUE_BINDING","CACHDE_RESULTS_COMPLETION_CODE"};
@@ -18,6 +18,8 @@ public class RuleAssociationData {
 	String rawData;
 	
 	Map<String,String> ruleAssociationMap= new HashMap<String,String>(); 
+	
+	List<RuleResultAction> ruleResultActionList = new ArrayList<RuleResultAction>();
 	
 	RuleAssociationData(String rawData)
 	{
@@ -39,19 +41,59 @@ public class RuleAssociationData {
 		while (ruleAssociationScanner.hasNext()) 
 		{
 			exp = ruleAssociationScanner.next();
+			
 
-			splitExp = exp.split(EXPRESSION_DELIMITER);
-
-			if (splitExp.length == 2) 
+			if (exp.startsWith("RESULT_ACTION"))
 			{
-				ruleAssociationMap.put(splitExp[0], splitExp[1]);
+				ruleResultActionList.add(new RuleResultAction(exp));
 			}
 			else
 			{
-				System.out.println("Not supported expression###:" + splitExp);
+				splitExp = exp.split(EXPRESSION_DELIMITER);
+	
+				if (splitExp.length == 2) 
+				{
+					ruleAssociationMap.put(splitExp[0], splitExp[1]);
+				}
+				else
+				{
+					System.out.println("Not supported expression###:" + splitExp);
+				}
 			}
 		}
 	}
+	
+	public String getRuleResultActionList()
+	{
+		String resultList="";
+		
+		for (RuleResultAction ruleresultAction: ruleResultActionList)
+		{
+			if (ruleresultAction.getResultAction() != null)
+			{
+				resultList += ruleresultAction.getResultAction() + ", ";
+			}
+		}
+		
+		if (resultList.equals(""))
+			resultList = "NONE";
+		
+		return resultList;
+	}
+	
+	public String getRuleResultRuleUidList()
+	{
+		String resultList=null;
+		
+		for (RuleResultAction ruleresultAction: ruleResultActionList)
+		{
+			if (ruleresultAction.getResultRuleId() != null)
+				resultList += ruleresultAction.getResultRuleId();
+		}
+		
+		return resultList;
+	}
+	
 	
 
 	public String  getRuleObjectAssociation() { 
@@ -79,33 +121,7 @@ public class RuleAssociationData {
 		return   ruleAssociationMap.get("CACHED_PARAM_VALUE_BINDING");
 	}
 
-	public String getResultAction() { 
-		return   ruleAssociationMap.get("RESULT_ACTION");
-	}
 	
-	public String getResultObjectUid() { 
-		return   ruleAssociationMap.get("RESULT_OBJECT_UID");
-	}
-	
-	public String getResultRuleSequence() { 
-		return   ruleAssociationMap.get("RESULT_RULE_SEQUENCE");
-	}
-	
-	public String getResultRuleTypeId() { 
-		return   ruleAssociationMap.get("RESULT_TYPE_ID");
-	}
-	
-	public String getResultRuleId() { 
-		return   ruleAssociationMap.get("RESULT_RULE_UID");
-	}
-	
-	public String getSecAction() { 
-		return   ruleAssociationMap.get("RESULT_SEC_ACTION");
-	}	
-	
-	public String getCachedResultsCompletionCode() { 
-		return   ruleAssociationMap.get("CACHDE_RESULTS_COMPLETION_CODE");
-	}
 	
 	
 	@Override
@@ -116,8 +132,7 @@ public class RuleAssociationData {
 		.append("\n\tEXECUTION_SCRIPT=").append(getExecutionScript())
 		.append("\n\tALIAS_BINDIND=").append(getAliasBinding())
 		.append("\n\tIS_USING_CACHE_RESULTS=").append(getIsUsingCacheResults())
-		.append("\n\tNOT_CACHED_PARAM_VALUE_BINDING=").append(getNotCachedParamValueBinding())
-		.append("\n\tCACHDE_RESULTS_COMPLETION_CODE=").append(getCachedResultsCompletionCode());
+		.append("\n\tNOT_CACHED_PARAM_VALUE_BINDING=").append(getNotCachedParamValueBinding());
 		
 		return sb.toString();
 	}

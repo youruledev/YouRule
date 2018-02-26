@@ -79,18 +79,18 @@ public class Parser {
 				rules = parseRuleAssociation(ruleAssociationDataElem);
 				
 				//TODO: adjust when supporting ALLSET
-				if (ruleAssociationDataElem.getResultAction() != null)
-				{
-					actionResult = ruleAssociationDataElem.getResultAction();
-				}
+				//if (ruleAssociationDataElem.getRuleResultActionList() != null)
+				//{
+					actionResult = ruleAssociationDataElem.getRuleResultActionList();
+				//}
 				
 			}
 			
 			//TODO: adjust when supporting ALLSET
-			if (ruleTypeData.getEvaluateType().equals("FIRST"))
-			{
+			//if (ruleTypeData.getEvaluateType().equals("FIRST"))
+			//{
 				ruleType = new RuleType(comment, ruleTypeID, ruleSubTypeID, ruleTypeName, executionTimeStamp, actionResult, rules);
-			}
+			//}
 		//}
 		
 	
@@ -300,7 +300,8 @@ public class Parser {
 				
 				//String []splitRuleUid = splitAction[0].split("\\^");
 				
-				Rule rule = new Rule (splitAction[0].split("\\^")[2], splitAction[1], splitAction[0].equals(ruleAssociationDataElem.getResultRuleId()), ruleEval);
+				String ruleResultRuleUid = ruleAssociationDataElem.getRuleResultRuleUidList();
+				Rule rule = new Rule (splitAction[0].split("\\^")[2], splitAction[1], ruleResultRuleUid != null && ruleResultRuleUid.contains(splitAction[0]), ruleEval);
 				
 				rules.add(rule);
 			}
@@ -334,7 +335,7 @@ public class Parser {
 		}
 		else  if (execScript.startsWith("SELECT"))
 		{
-			return null;
+			return parseAllsetExecutionScript(execScript);
 		}
 		
 		return null;
@@ -406,8 +407,83 @@ public class Parser {
 	
 	
 	
-	private void parseAllsetExecutionScript(String execScript)
+	private List<WhereThenData> parseAllsetExecutionScript(String execScript)
 	{
+		
+		/*
+		 SELECT 'GR1^3^DIAS-CT-HV,GR1^DIAS-CT-HV,0,0'
+	,0
+FROM DUAL
+WHERE :X_LCL_INSTRM_PRTRY IN (
+		'STP'
+		,'CCP'
+		,'CCT'
+		,'LOAN-TR'
+		)
+
+UNION ALL
+
+SELECT 'GR1^3^DIAS-ONL-CT-HV,GR1^DIAS-ONL-CT-HV,0,1'
+	,1
+FROM DUAL
+WHERE :P_PRODUCT_CD IN (
+		'ABX'
+		,'OLR'
+		,'IOP'
+		,'DEF_PROD'
+		)
+
+UNION ALL
+
+SELECT 'GR1^3^DIAS_EQ _CT-HV,GR1^DIAS-EQ-CT-HV,0,2'
+	,2
+FROM DUAL
+WHERE :X_STTLM_CCY = 'EUR'
+	AND :X_CDTR_ACCT_IBAN IS NOT NULL
+	AND :X_CHRG_BR IN (
+		'SLEV'
+		,'SHAR'
+		)
+	AND :X_LCL_INSTRM_PRTRY <> 'EMPTY'
+	AND :P_ORIG_MSG_TYPE = 'Pain_001'
+
+UNION ALL
+		 */
+		
+		
+		Scanner ruleScanner = new Scanner(execScript);
+		
+		ruleScanner.useDelimiter("UNION ALL");
+		
+		String exp;
+		String[] splitRule;
+		String splitRuleAction;
+				
+		List<WhereThenData> retList = new ArrayList<WhereThenData>();
+		
+		while (ruleScanner.hasNext()) 
+		{
+			exp = ruleScanner.next();
+
+			splitRule = exp.split("WHERE");
+			// splitExp[0] - rulename and action - SELECT 'GR1^3^DIAS-CT-HV,GR1^DIAS-CT-HV,0,0' ,0 FROM DUAL			
+			// splitExp[1] - rawCondition  - :P_PRODUCT_CD IN ('ABX' ,'OLR' , 'IOP' ,'DEF_PROD' )
+			
+			splitRuleAction = splitRule[0];
+			
+			// removing first "SELECT " + lst of ",0 FROM DUAL"
+			if (splitRuleAction.indexOf("SELECT") > -1)
+			{
+				splitRuleAction = splitRuleAction.substring("SELECT ".length(), splitRuleAction.lastIndexOf(','));
+			}
+			
+			splitRuleAction = splitRuleAction.substring(2); // removing first '
+			splitRuleAction = splitRuleAction.substring(0, splitRuleAction.length()-2); // removing last first '
+			
+			retList.add(new WhereThenData(splitRule[1], splitRuleAction));
+		}
+		
+		return retList;
 				
 	}
 	

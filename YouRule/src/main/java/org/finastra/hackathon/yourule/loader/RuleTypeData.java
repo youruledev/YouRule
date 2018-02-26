@@ -19,7 +19,7 @@ import java.util.Scanner;
 public class RuleTypeData {
 	public static String RULE_TYPE_EVAL_INFO_DELIMITER = "#RULE_TYPE_ID_EVAL_START";
 	
-	private static String KEY_DELIMITER = "####";
+	private static String KEY_DELIMITER = "#####";
 	private static String EXPRESSION_DELIMITER = "#=#";
 	
 	private static String[] supportedKey = new String[] {"RULE_TYPE_ID","RULE_SUB_TYPE_ID","RULE_TYPE_NAME","EVALUATE_TYPE","EXEC_TYPE","TIME_STAMP"};
