@@ -75,9 +75,6 @@ public class RuleAssociationData {
 			}
 		}
 		
-		if (resultList.equals(""))
-			resultList = "NONE";
-		
 		return resultList;
 	}
 	

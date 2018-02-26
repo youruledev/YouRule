@@ -10,6 +10,7 @@ import org.finastra.hackathon.yourule.loader.DataLoader;
 import org.finastra.hackathon.yourule.loader.RuleTypeData;
 import org.finastra.hackathon.yourule.model.Condition;
 import org.finastra.hackathon.yourule.model.Rule;
+import org.finastra.hackathon.yourule.model.RuleDetails;
 import org.finastra.hackathon.yourule.model.RuleEvaluation;
 import org.finastra.hackathon.yourule.model.RuleType;
 import org.finastra.hackathon.yourule.model.StringsDef;
@@ -55,6 +56,14 @@ public class RuleTypeService
 //		return list;
 	}
 	
+	public List<RuleDetails> getAllRules(String Mid)
+	{	
+		
+		List<RuleTypeData> rulesTypesData = loadAllRuleTypes(Mid);
+		List<RuleDetails> retRuleTypes = parseRules(rulesTypesData, Mid);
+		
+		return retRuleTypes;
+	}
 	
 	public List<RuleTypeData> loadAllRuleTypes ( String fileName)
 	{
@@ -70,6 +79,13 @@ public class RuleTypeService
 		}
 		
 		return loader.getAllRuleTypeEvalData();
+	}
+	
+	public List<RuleDetails> parseRules (List<RuleTypeData> rulesTypesData, String mid)
+	{
+		Parser parser= new Parser();
+		List<RuleDetails> retRuleTypes = parser.parseRulesDetails(rulesTypesData, mid);
+		return retRuleTypes;
 	}
 	
 	public List<RuleType> parseRuleTypes (List<RuleTypeData> rulesTypesData)
